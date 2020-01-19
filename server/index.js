@@ -26,24 +26,45 @@ async function accessSpread(){
   const info = await promisify(doc.getInfo)();
   const sheet = info.worksheets[1];
   console.log('Loaded doc: '+info.title+' by '+info.author.email);
-
   console.log('sheet 1: '+sheet.title+' '+sheet.rowCount+'x'+sheet.colCount);
-  console.log(sheet);
+  //console.log(sheet);
 
   const cells = await promisify(sheet.getCells)({
     'min-row': 1,
-    'max-row': 10,
+    'max-row': sheet.rowCount,
     'min-col': 1,
-    'max-col': 2,
+    'max-col': 5,
     'return-empty': true
 
   });
+  console.log("Start...");
+  var i;
+  for (i = 0; i < sheet.rowCount*5; i+=5) {
+    //console.log(cells[i]);
+    //console.log(cells[i].value)
+    if(cells[i].value.length == 0){
+      break
+    }
+  }
+  console.log("i = " + i );
+  cells[i].value = "What shape is the Earth?";
+  cells[i+1].value = "Circle";
+  cells[i+2].value = "Square";
+  cells[i+3].value = "Triangle";
+  cells[i+4].value = "Pointy";
 
+  for (y = i; y < i+5; y++){
+    cells[y].save();
+    //console.log(y);
+  }
+
+/*
   cells[6].value = "sd";
   cells[6].save();
   console.log(cells[8]);
-   cells[8].value = "sdsfdsfd";
+  cells[8].value = "sdsfdsfd";
   cells[8].save();
+*/
 }
 
 //==
