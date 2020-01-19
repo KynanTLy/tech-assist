@@ -1,10 +1,12 @@
 const express = require("express");
 const fs = require("fs");
 var cors = require("cors");
+const bodyParser = require("body-parser");
 const speech = require("@google-cloud/speech");
 const axios = require("axios");
 
 const app = express();
+app.use(bodyParser.json());
 app.use(cors());
 const port = 8000;
 const SPREADSHEET_ID = '10oX-86DeSJPXBuIJdhJr_744ccdZAX5yrM6si_Jhj8E';
@@ -20,7 +22,7 @@ const cred = require('./google-sheets.json');
 const doc = new googleSpreadSheet(SPREADSHEET_ID);
 
 
-async function accessSpread(){
+async function accessSpread(question,correct,wrong1,wrong2,wrong3){
 
   await promisify(doc.useServiceAccountAuth)(cred);
   const info = await promisify(doc.getInfo)();
@@ -47,11 +49,11 @@ async function accessSpread(){
     }
   }
   console.log("i = " + i );
-  cells[i].value = "What shape is the Earth?";
-  cells[i+1].value = "Circle";
-  cells[i+2].value = "Square";
-  cells[i+3].value = "Triangle";
-  cells[i+4].value = "Pointy";
+  cells[i].value = question
+  cells[i+1].value = correct
+  cells[i+2].value = wrong1
+  cells[i+3].value = wrong2
+  cells[i+4].value = wrong3
 
   for (y = i; y < i+5; y++){
     cells[y].save();
@@ -111,9 +113,10 @@ app.get("/speech", (req, res) => {
   });
 });
 
-app.get("/submit", (req, res) => {
+app.post("/submit", (req, res) => {
   console.log("posting")
-  accessSpread();
+  console.log(req.body.correctAnswer);
+  accessSpread(req.body.question,req.body.correctAnswer,req.body.wrongAnswer1,req.body.wrongAnswer2,req.body.wrongAnswer3);
   /*
   axios
     .get(
