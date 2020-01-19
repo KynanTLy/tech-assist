@@ -9,13 +9,13 @@ const Container = styled.div`
     display: flex;
   align-items: flex-start;
   justify-content: space-around;
-  margin-top: 30px;
+  margin-top: 200px;
   border: 1px solid whitesmoke;
   padding: 21px;
   border-radius: 4px;
-  
-}
+
 `;
+
 
 const App = () => {
   const [question, setQuestion] = useState("");

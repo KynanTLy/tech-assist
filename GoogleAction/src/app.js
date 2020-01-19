@@ -139,18 +139,40 @@ app.setHandler({
     QuestionReply(){
         if (this.$inputs.letter.value.toLowerCase() == correctAnswer.toLowerCase()){
             if (questionList === undefined || questionList.length == 0){
-                this.tell("You are correct! It is " +  this.$inputs.letter.value + " \nYou completed all the questions!");
+                let speech = this.speechBuilder()
+                    .addText('You are correct! It is ')
+                    .addText( this.$inputs.letter.value)
+                    .addBreak('700ms')
+                    .addText('You completed all the questions')
+                this.tell(speech);
                 numCorrect++;
             } else {
-                this.ask("You are correct! It is " +  this.$inputs.letter.value + " \nWould you like to continue?");
+                let speech = this.speechBuilder()
+                    .addText('You are correct! It is ')
+                    .addText( this.$inputs.letter.value)
+                    .addBreak('700ms')
+                    .addText('Would you like to continue?')
+                this.tell(speech)
                 numCorrect++;
             }
 
         } else {
             if (questionList === undefined || questionList.length == 0){
-                this.tell("You are correct! It is " +  correctAnswer + " \nYou completed all the questions!");
+                let speech = this.speechBuilder()
+                    .addText('You are incorrect! It is ')
+                    .addText( correctAnswer)
+                    .addBreak('700ms')
+                    .addText('You completed all the questions!')
+                this.tell(speech)
+                //this.tell("You are incorrect! It is " +  correctAnswer + " \nYou completed all the questions!");
             } else {
-                this.ask("You were incorrect. It is " +  correctAnswer + " \nWould you like to continue?");
+                let speech = this.speechBuilder()
+                    .addText('You are incorrect! It is ')
+                    .addText( correctAnswer)
+                    .addBreak('700ms')
+                    .addText('Would you like to continue?')
+               
+                //this.ask("You were incorrect. It is " +  correctAnswer + " \nWould you like to continue?");
             }
   
         }
