@@ -2,12 +2,51 @@ const express = require("express");
 const fs = require("fs");
 var cors = require("cors");
 const speech = require("@google-cloud/speech");
+const axios = require("axios");
 
 const app = express();
 app.use(cors());
 const port = 8000;
+const SPREADSHEET_ID = '10oX-86DeSJPXBuIJdhJr_744ccdZAX5yrM6si_Jhj8E';
+const GOOGLE_BASE_URL = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}`;
 
 const client = new speech.SpeechClient();
+
+//==
+
+const googleSpreadSheet = require('google-spreadsheet');
+const {promisify} = require('util');
+const cred = require('./google-sheets.json');
+const doc = new googleSpreadSheet(SPREADSHEET_ID);
+
+
+async function accessSpread(){
+
+  await promisify(doc.useServiceAccountAuth)(cred);
+  const info = await promisify(doc.getInfo)();
+  const sheet = info.worksheets[1];
+  console.log('Loaded doc: '+info.title+' by '+info.author.email);
+
+  console.log('sheet 1: '+sheet.title+' '+sheet.rowCount+'x'+sheet.colCount);
+  console.log(sheet);
+
+  const cells = await promisify(sheet.getCells)({
+    'min-row': 1,
+    'max-row': 10,
+    'min-col': 1,
+    'max-col': 2,
+    'return-empty': true
+
+  });
+
+  cells[6].value = "sd";
+  cells[6].save();
+  console.log(cells[8]);
+   cells[8].value = "sdsfdsfd";
+  cells[8].save();
+}
+
+//==
 
 async function transcribe() {
   console.log("Transcription started");
@@ -51,8 +90,20 @@ app.get("/speech", (req, res) => {
   });
 });
 
-app.post("/submit", (req, res) => {
-  // complicated
+app.get("/submit", (req, res) => {
+  console.log("posting")
+  accessSpread();
+  /*
+  axios
+    .get(
+      `${GOOGLE_BASE_URL}/values/question!A1:A4?key=AIzaSyC9ovMWO6Iobe5mZWozI67Qq1iBWQdOnTM`
+    )
+    .then(res => {
+      console.log(res);
+    })
+    .catch(err => {
+      console.log(err);
+    });*/
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
