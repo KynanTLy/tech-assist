@@ -110,24 +110,25 @@ app.setHandler({
             .addText('The question is ')
             .addBreak('300ms')
             .addText(Askquestion)
-            .addBreak('700ms')
+            .addBreak('900ms')
             .addText("Your choices are")
-            .addBreak('700ms')
+            .addBreak('900ms')
             .addText("A.")
-            .addBreak('700ms')
+            .addBreak('900ms')
             .addText(assign[0])
+            .addBreak('900ms')
             .addText("B. ")
-            .addBreak('700ms')
+            .addBreak('900ms')
             .addText(assign[1])
-            .addBreak('700ms')
+            .addBreak('900ms')
             .addText("C. ")
-            .addBreak('700ms')
+            .addBreak('900ms')
             .addText(assign[2])
-            .addBreak('700ms')
+            .addBreak('900ms')
             .addText("D. ")
-            .addBreak('700ms')
+            .addBreak('900ms')
             .addText(assign[3])
-            .addBreak('700ms');
+            .addBreak('900ms');
 
         this.ask(speech);
 
@@ -140,19 +141,19 @@ app.setHandler({
         if (this.$inputs.letter.value.toLowerCase() == correctAnswer.toLowerCase()){
             if (questionList === undefined || questionList.length == 0){
                 let speech = this.speechBuilder()
-                    .addText('You are correct! It is ')
+                    .addText('You are correct! It is '.toUpperCase())
                     .addText( this.$inputs.letter.value)
-                    .addBreak('700ms')
+                    .addBreak('900ms')
                     .addText('You completed all the questions')
                 this.tell(speech);
                 numCorrect++;
             } else {
                 let speech = this.speechBuilder()
                     .addText('You are correct! It is ')
-                    .addText( this.$inputs.letter.value)
-                    .addBreak('700ms')
+                    .addText( this.$inputs.letter.value.toUpperCase())
+                    .addBreak('900ms')
                     .addText('Would you like to continue?')
-                this.tell(speech)
+                this.ask(speech)
                 numCorrect++;
             }
 
@@ -160,18 +161,18 @@ app.setHandler({
             if (questionList === undefined || questionList.length == 0){
                 let speech = this.speechBuilder()
                     .addText('You are incorrect! It is ')
-                    .addText( correctAnswer)
-                    .addBreak('700ms')
+                    .addText( correctAnswer.toUpperCase())
+                    .addBreak('900ms')
                     .addText('You completed all the questions!')
                 this.tell(speech)
                 //this.tell("You are incorrect! It is " +  correctAnswer + " \nYou completed all the questions!");
             } else {
                 let speech = this.speechBuilder()
                     .addText('You are incorrect! It is ')
-                    .addText( correctAnswer)
-                    .addBreak('700ms')
+                    .addText( correctAnswer.toUpperCase())
+                    .addBreak('900ms')
                     .addText('Would you like to continue?')
-               
+                this.ask(speech)
                 //this.ask("You were incorrect. It is " +  correctAnswer + " \nWould you like to continue?");
             }
   
@@ -189,7 +190,7 @@ app.setHandler({
     },
 
     END(){
-        this.tell("Training is over. Your score is " + numCorrect + " / " + numAsked);
+        this.tell("Training is over. You got " + numCorrect + " / " + numAsked + " of the questions correct");
     },
 });
 
