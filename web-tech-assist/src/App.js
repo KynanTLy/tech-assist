@@ -6,43 +6,14 @@ import useGoogleService from "./api/services";
 import axios from "axios";
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  max-width: 400px;
-  background-color: #4D5057;
-  .input{
-  width: 400px;
-  margin: 0 auto;
-  font-family: Lato;
-  font-size: 1.4em;
-  input{    
-    width: 400px;
-    height: 80px;  
-    margin-top: 80px;
-    font-family: Lato;
-    font-size: 1.8em;    
-    background-color: transparent;
-    border: none;
-    border-top: 3px solid #4EA5D9;    
-    border-bottom: 3px solid #4EA5D9;
-    outline: none;
-    color: #4EA5D9;
-    padding-left: 10px; 
-      &:focus + label{
-      top: -130px;
-      font-size: 1.2em;
-      transition: all .3s;
-      }
-        label{
-    display: block;
-    position: relative;
-    left: 10px;
-    top: -70px;
-    font-size: 1.8em;
-    cursor: text;
-    color: #44CFCB;    
-    transition: all .3s;    
-  }
+    display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+  margin-top: 30px;
+  border: 1px solid whitesmoke;
+  padding: 21px;
+  border-radius: 4px;
+  
 }
 `;
 
